@@ -1,6 +1,6 @@
-const fs = require("fs");
-const http = require("http");
-const url = require("url");
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 
 //////////////////////////////////////
 ///File
@@ -18,22 +18,10 @@ const url = require("url");
 
 /////////////////////////////////////
 /////SERVER
-const tempCard = fs.readFileSync(
-  `${__dirname}/starter/templates/template-card.html`,
-  "utf-8"
-);
-const tempOverview = fs.readFileSync(
-  `${__dirname}/starter/templates/template-overview.html`,
-  "utf-8"
-);
-const tempProduct = fs.readFileSync(
-  `${__dirname}/starter/templates/template-product.html`,
-  "utf-8"
-);
-const data = fs.readFileSync(
-  `${__dirname}/starter/dev-data/data.json`,
-  "utf-8"
-);
+const tempCard = fs.readFileSync(`${__dirname}/starter/templates/template-card.html`, 'utf-8');
+const tempOverview = fs.readFileSync(`${__dirname}/starter/templates/template-overview.html`, 'utf-8');
+const tempProduct = fs.readFileSync(`${__dirname}/starter/templates/template-product.html`, 'utf-8');
+const data = fs.readFileSync(`${__dirname}/starter/dev-data/data.json`, 'utf-8');
 
 const replacetemplate = function (tempcard, product) {
   let output = tempcard;
@@ -46,8 +34,7 @@ const replacetemplate = function (tempcard, product) {
   output = output.replace(/{%DESCRIPTION%}/g, product.description);
   output = output.replace(/{%ID%}/g, product.id);
 
-  if (!product.organic)
-    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
+  if (!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic');
 
   return output;
 };
@@ -58,28 +45,26 @@ const server = http.createServer((req, res) => {
   // const pathName = req.url;
 
   //overview
-  if (pathname === "/" || pathname === "/overview") {
-    res.writeHead(200, { "content-type": "text/html" });
+  if (pathname === '/' || pathname === '/overview') {
+    res.writeHead(200, { 'content-type': 'text/html' });
 
-    const cardHtml = dataObj
-      .map((el) => replacetemplate(tempCard, el))
-      .join("");
-    const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardHtml);
+    const cardHtml = dataObj.map((el) => replacetemplate(tempCard, el)).join('');
+    const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardHtml);
     res.end(output);
   }
 
   // product
-  else if (pathname === "/product") {
-    res.writeHead(200, { "content-type": "text/html" });
+  else if (pathname === '/product') {
+    res.writeHead(200, { 'content-type': 'text/html' });
     const product = dataObj[query.id];
     const output = replacetemplate(tempProduct, product);
     res.end(output);
   }
 
   //api
-  else if (pathname === "/api") {
+  else if (pathname === '/api') {
     res.writeHead(200, {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     });
     res.end(data);
   }
@@ -87,12 +72,12 @@ const server = http.createServer((req, res) => {
   //error
   else {
     res.writeHead(404, {
-      "content-type": "text/html",
+      'content-type': 'text/html',
     });
-    res.end("<h1>PAGE NOT Found</h1>");
+    res.end('<h1>PAGE NOT Found</h1>');
   }
 });
 
-server.listen(8000, "127.0.0.1", () => {
-  console.log("starting the server");
+server.listen(8000, '127.0.0.1', () => {
+  console.log('starting the server');
 });
