@@ -101,3 +101,35 @@ exports.CreateTour = async (req, res) => {
     });
   }
 };
+
+exports.getTourStats = async (req, res) => {
+  try {
+    const tourStats = await Tour.aggregate([
+      { $match: { ratingAverage: { $gte: 4.5 } } },
+      {
+        $group: {
+          _id: '$difficulty',
+          total: { $sum: 1 },
+          numRating: { $sum: '$ratingsQuantity' },
+          minPrice: { $min: '$price' },
+          avgPrice: { $avg: '$price' },
+        },
+      },
+      {
+        $sort: { total: 1 },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tourStats,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid Data Sent',
+    });
+  }
+};
