@@ -133,3 +133,53 @@ exports.getTourStats = async (req, res) => {
     });
   }
 };
+
+exports.tourPlan = async (req, res) => {
+  try {
+    const year = req.params.year * 1;
+    console.log(year);
+
+    const plan = await Tour.aggregate([
+      { $unwind: '$startDates' },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { month: { $month: '$startDates' }, name: '$name' },
+          price: { $sum: '$price' },
+          total: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: { month: '$_id.month' },
+
+          documents: {
+            $push: { name: '$_id.name', price: '$price', total: { $sum: 1 } },
+          },
+          totalTours: { $sum: 1 },
+          subTotalPrice: { $sum: '$price' },
+        },
+      },
+      { $sort: { '_id.month': 1 } },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        plan,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid Data Sent',
+    });
+  }
+};
