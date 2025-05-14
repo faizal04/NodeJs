@@ -154,6 +154,8 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const app = express();
 const morgan = require('morgan');
+const AppError = require('./utils/appError');
+const errorController = require('./controllers/errorController');
 
 //////////////////////MiddleWare
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
@@ -170,4 +172,10 @@ app.use((req, res, next) => {
 //mount routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+});
+
+app.use(errorController);
 module.exports = app;
