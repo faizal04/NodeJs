@@ -35,6 +35,11 @@ const handleDuplicateFieldsDB = (err) => {
     404,
   );
 };
+const jsonTokenExp = () =>
+  new AppError('Your Token is Expired ! Please Login Again', 401);
+const jsonWebtokenError = () => {
+  new AppError('Invalid Token Please Login Again', 401);
+};
 const hadleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors)
     .map((el) => el.message)
@@ -57,6 +62,9 @@ module.exports = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError') error = hadleValidationErrorDB(error);
 
+    if (error.name === 'JsonWebTokenError') error = jsonWebtokenError();
+
+    if (error.name === 'TokenExpiredError') error = jsonTokenExp();
     sendErrorProd(error, res);
   }
 };
