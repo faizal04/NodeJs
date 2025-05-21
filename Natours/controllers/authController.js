@@ -17,6 +17,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
+    passwordChangeAt: req.body.passwordChangeAt,
   });
   const token = signToken(user._id);
   res.status(200).json({
@@ -44,7 +45,6 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // console.log(req.headers);
   let token;
   if (
     req.headers.authorization &&
@@ -59,6 +59,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   const decoded = await jwt.verify(token, process.env.JSON_SECRET);
-  console.log(decoded);
+  const freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    next(
+      new AppError('The user beloging to this token does no longer exist', 401),
+    );
+  }
+  if (freshUser.passwordChangeCheck(decoded.iat)) {
+    next(
+      new AppError('User recently changed the password! Please login again'),
+    );
+  }
+  req.user = freshUser;
   next();
 });
