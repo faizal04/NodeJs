@@ -5,7 +5,7 @@ const APIfeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.aliasTopTour = (req, res, next) => {
-  req.query.limit = '5';
+  req.query.limit = '100';
   req.query.sort = '-ratingAverage,price';
   req.query.fields = 'name,price,ratingAverage,summary,difficulty';
   next();
