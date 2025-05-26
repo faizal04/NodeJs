@@ -1,5 +1,6 @@
 // const express = require("express ")
 const mongoose = require('mongoose');
+const User = require('./userModel');
 const TourSchema = mongoose.Schema(
   {
     name: {
@@ -70,6 +71,35 @@ const TourSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        description: String,
+        address: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
 
   {
@@ -91,7 +121,12 @@ TourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
   next();
 });
+// TourSchema.pre('save', async function (next) {
+//   const guidePromise = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidePromise);
 
+//   next();
+// });
 //aggregation middleware
 
 TourSchema.pre('aggregate', function (next) {
@@ -99,7 +134,13 @@ TourSchema.pre('aggregate', function (next) {
   console.log(this.pipeline());
   next();
 });
-
+TourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
+});
 const Tour = mongoose.model('Tour', TourSchema);
 
 module.exports = Tour;
