@@ -150,6 +150,7 @@
 const express = require('express');
 const userRouter = require('./routes/userRoutes');
 const tourRouter = require('./routes/tourRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 const dotenv = require('dotenv');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -197,6 +198,7 @@ app.use(
 //mount routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

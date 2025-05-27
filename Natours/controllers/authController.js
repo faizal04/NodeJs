@@ -90,7 +90,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      next(new AppError('You are not Allowed to perform this task'), 403);
+      next(new AppError('You are not Allowed to perform this task', 403));
     }
     next();
   };
