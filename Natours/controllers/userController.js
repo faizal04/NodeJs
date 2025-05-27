@@ -44,12 +44,16 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     message: 'account successfully deactivated',
   });
 });
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Route not defined',
+exports.getUser = catchAsync(async (req, res) => {
+  const userdata = await User.findById(req.params.id).populate('reviews');
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      userdata,
+    },
   });
-};
+});
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',

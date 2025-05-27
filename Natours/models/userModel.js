@@ -3,52 +3,63 @@ const crypto = require('crypto');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const AppError = require('../utils/appError');
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'please tell us your name'],
-  },
-  email: {
-    type: String,
-    required: [true, 'please provide email'],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, 'please provide a valid email'],
-  },
-  photo: {
-    type: String,
-  },
-  role: {
-    type: String,
-    enum: ['admin', 'user', 'lead-guide', 'guide'],
-    default: 'user',
-  },
-  password: {
-    type: String,
-    minLength: 8,
-    required: [true, 'please provide a password'],
-    select: false,
-  },
-  confirmPassword: {
-    type: String,
-    required: [true, 'please confirm your password'],
-    validate: {
-      validator: function (el) {
-        return el === this.password;
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'please tell us your name'],
+    },
+    email: {
+      type: String,
+      required: [true, 'please provide email'],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'please provide a valid email'],
+    },
+    photo: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'user', 'lead-guide', 'guide'],
+      default: 'user',
+    },
+    password: {
+      type: String,
+      minLength: 8,
+      required: [true, 'please provide a password'],
+      select: false,
+    },
+    confirmPassword: {
+      type: String,
+      required: [true, 'please confirm your password'],
+      validate: {
+        validator: function (el) {
+          return el === this.password;
+        },
+        message: 'Password doesnt match',
       },
-      message: 'Password doesnt match',
+    },
+    passwordChangeAt: Date,
+    passwordResetToken: { type: String },
+    passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
     },
   },
-  passwordChangeAt: Date,
-  passwordResetToken: { type: String },
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    id: false,
   },
+);
+userSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'user',
+  localField: '_id',
 });
-
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();

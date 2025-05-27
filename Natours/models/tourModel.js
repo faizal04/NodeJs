@@ -103,10 +103,15 @@ const TourSchema = mongoose.Schema(
   },
 
   {
-    toJSON: { virtauls: true },
-    toObject: { virtual: true },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+TourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
 TourSchema.virtual('weeks').get(function () {
   return this.duration / 7;
 });
