@@ -176,7 +176,7 @@ app.use((req, res, next) => {
 app.use(helmet());
 const limter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 100,
   message: 'too many requests from this IP, Please try again later',
 });
 app.use('/api', limter);

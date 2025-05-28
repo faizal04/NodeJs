@@ -9,12 +9,13 @@
 const express = require('express');
 const tourController = require('../controllers/tourControllers');
 const authController = require('./../controllers/authController.js');
-
+const reviewRouter = require('../routes/reviewRoutes.js');
 const router = express.Router();
 router.route('/tour-stats').get(tourController.getTourStats);
 
 router.route('/monthly-plan/:year').get(tourController.tourPlan);
 
+router.use('/:tourId/reviews', reviewRouter);
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTour, tourController.GetAllTours);
@@ -29,7 +30,7 @@ router
   .delete(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
-    tourController.DeleteTour,
+    tourController.deleteTour,
   );
 
 module.exports = router;
