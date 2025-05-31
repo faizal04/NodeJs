@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const factoryHandler = require('./factoryHandler');
 
 exports.getAllUser = catchAsync(async (req, res) => {
   const user = await User.find();
@@ -60,15 +61,5 @@ exports.createUser = (req, res) => {
     message: 'Route not defined',
   });
 };
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Route not defined',
-  });
-};
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Route not defined',
-  });
-};
+exports.updateUser = factoryHandler.updateOne(User);
+exports.deleteUser = factoryHandler.deleteOne(User);
