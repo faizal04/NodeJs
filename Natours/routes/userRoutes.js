@@ -14,6 +14,9 @@ router.patch(
   authController.changePassword,
 );
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
+router
+  .route('/me')
+  .get(authController.protect, userController.getme, userController.getUser);
 
 router
   .route('/')
@@ -25,5 +28,12 @@ router
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
+
+// router.get(
+//   '/me',
+//   authController.protect,
+//   userController.getme,
+//   userController.getUser,
+// );
 
 module.exports = router;
