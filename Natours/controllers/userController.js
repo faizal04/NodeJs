@@ -3,14 +3,6 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factoryHandler = require('./factoryHandler');
 
-exports.getAllUser = catchAsync(async (req, res) => {
-  const user = await User.find();
-  res.status(200).json({
-    status: 'success',
-    users: user,
-  });
-});
-
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.confirmPassword)
     return next(new AppError('this Route is not for updating password', 400));
@@ -45,21 +37,20 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     message: 'account successfully deactivated',
   });
 });
-exports.getUser = catchAsync(async (req, res) => {
-  const userdata = await User.findById(req.params.id).populate('reviews');
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      userdata,
-    },
-  });
-});
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'Route not defined',
+    message: 'Route not defined// visit to the singup route',
   });
 };
+
+exports.getme = (req, res, next) => {
+  req.params.id = req.user._id;
+
+  next();
+};
+
+exports.getUser = factoryHandler.getOne(User, { path: 'reviews' });
+exports.getAllUser = factoryHandler.getAll(User);
 exports.updateUser = factoryHandler.updateOne(User);
 exports.deleteUser = factoryHandler.deleteOne(User);
