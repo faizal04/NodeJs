@@ -107,6 +107,7 @@ const TourSchema = mongoose.Schema(
     toObject: { virtuals: true },
   },
 );
+TourSchema.index({ price: 1, ratingAverage: -1 });
 TourSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'tour',
