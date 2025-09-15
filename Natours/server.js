@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-// process.on('uncaughtException', (err) => {
-//   console.log('uncaughtError');
-//   process.exit(0);
-// });
+
 const dotenv = require('dotenv');
 const app = require('./app');
 

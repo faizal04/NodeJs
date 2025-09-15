@@ -50,7 +50,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please Enter Email and Password', 400));
   }
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOn({ email }).select('+password');
 
   if (!user || !(await user.comparePassword(password, user.password))) {
     return next(new AppError('Invalid Email or Password', 401));
@@ -164,7 +164,7 @@ exports.changePassword = catchAsync(async (req, res, next) => {
     user.password,
   );
   if (!correct) {
-    return next(new AppError('Invalid Current Password'));
+    return next(new AppError('Invalid Current Password', 500));
   }
 
   user.password = req.body.newpassword;
