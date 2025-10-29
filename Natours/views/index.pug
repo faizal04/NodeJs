@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Hook Hike | #{tour}
+    link(rel='stylesheet' href='css/style.css')
+    link(rel='shortcut icon' type='image/png' href='img/favicon.png')
+  body
+    h1 Just checking the index page
+
+    // this comment will be visible in the element section in browser. 
+    //- this comment will not be available 
+
+    //- there are 2 types of code buffered and unbuffered. 
+    //- this one is buffered 
+    h2= tour.toUpperCase()
+    //-this one is unbuffered code
+    
+    - const x= 10;
+    h2=2*x
+
+  
