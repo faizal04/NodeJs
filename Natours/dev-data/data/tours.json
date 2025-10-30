@@ -16,6 +16,7 @@
     ],
     "_id": "5c88fa8cf4afda39709c2955",
     "name": "The Sea Explorer",
+    "slug": "The-Sea-Explorer",
     "duration": 7,
     "maxGroupSize": 15,
     "difficulty": "medium",

@@ -17,6 +17,8 @@ const TourSchema = mongoose.Schema(
       min: [1, 'A tour Rating must be above 1'],
       max: [5, 'A tour Rating must be below 5'],
     },
+    slug: String,
+
     duration: {
       type: Number,
       required: [true, 'this field is required'],
