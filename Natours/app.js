@@ -3,6 +3,7 @@ const path = require('path');
 const userRouter = require('./routes/userRoutes');
 const tourRouter = require('./routes/tourRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 const dotenv = require('dotenv');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -53,13 +54,9 @@ app.use(
   }),
 );
 
-app.get('/', (req, res) => {
-  res.status(200).render('index', {
-    tour: 'the forest hiker',
-    User: 'Faisal Harray',
-  });
-});
 //mount routes
+app.use('/', viewRouter);
+
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/reviews', reviewRouter);
