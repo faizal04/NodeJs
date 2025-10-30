@@ -1,21 +1,22 @@
 doctype html
 html
   head
-    title Hook Hike | #{tour}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    title Hook & Hike | #{title}
     link(rel='stylesheet' href='css/style.css')
     link(rel='shortcut icon' type='image/png' href='img/favicon.png')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+
+   
   body
-    h1 Just checking the index page
+  include _header
+    //CONTENT
+  block content 
+    h1 this is the placeholder
 
-    // this comment will be visible in the element section in browser. 
-    //- this comment will not be available 
 
-    //- there are 2 types of code buffered and unbuffered. 
-    //- this one is buffered 
-    h2= tour.toUpperCase()
-    //-this one is unbuffered code
-    
-    - const x= 10;
-    h2=2*x
+    //Footer
+  include _footer
 
-  
+   
