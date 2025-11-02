@@ -29,8 +29,36 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+);
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", 'https://unpkg.com'],
+        'style-src': ["'self'", 'https://unpkg.com', "'unsafe-inline'"],
+        'img-src': [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://unpkg.com',
+          'https://*.tile.openstreetmap.org',
+          'https://*.openstreetmap.org',
+        ],
+        'connect-src': ["'self'"],
+        'font-src': ["'self'"],
+        'object-src': ["'none'"],
+      },
+    },
+  }),
+);
+
 const limter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,

@@ -73,6 +73,7 @@
     ],
     "_id": "5c88fa8cf4afda39709c2951",
     "name": "The Forest Hiker",
+    "slug": "The-Forest-Hiker",
     "duration": 5,
     "maxGroupSize": 25,
     "difficulty": "easy",
@@ -126,6 +127,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c295a",
     "name": "The Snow Adventurer",
+    "slug": "The-Snow-Adventurer",
+
     "duration": 4,
     "maxGroupSize": 10,
     "difficulty": "difficult",
@@ -172,6 +175,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c2961",
     "name": "The Park Camper",
+    "slug": "The-Park-Camper",
+
     "duration": 10,
     "maxGroupSize": 15,
     "difficulty": "medium",
@@ -232,6 +237,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c295d",
     "name": "The City Wanderer",
+    "slug": "The-City-Wanderer",
+
     "duration": 9,
     "maxGroupSize": 20,
     "difficulty": "easy",
@@ -281,6 +288,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c2966",
     "name": "The Sports Lover",
+    "slug": "The-Sports-Lover",
+
     "duration": 14,
     "maxGroupSize": 8,
     "difficulty": "difficult",
@@ -348,6 +357,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c2970",
     "name": "The Star Gazer",
+    "slug": "The-Star-Gazer",
+
     "duration": 9,
     "maxGroupSize": 8,
     "difficulty": "medium",
@@ -397,6 +408,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c2974",
     "name": "The Northern Lights",
+    "slug": "The-Northern-Lights",
+
     "duration": 3,
     "maxGroupSize": 12,
     "difficulty": "easy",
@@ -436,6 +449,8 @@
     ],
     "_id": "5c88fa8cf4afda39709c296c",
     "name": "The Wine Taster",
+    "slug": "The-Wine-Taster",
+
     "duration": 5,
     "maxGroupSize": 8,
     "difficulty": "easy",
