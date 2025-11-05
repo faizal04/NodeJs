@@ -7132,7 +7132,8 @@ var loginForm = document.querySelector('.form');
 var logoutbtn = document.querySelector('.nav__el--logout');
 
 if (mapBox) {
-  var locations = JSON.parse(dataset.location);
+  var locations = JSON.parse(mapBox.dataset.location);
+  console.log(locations);
   (0, _mapbox.displayMap)(locations);
 }
 

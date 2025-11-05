@@ -6,7 +6,8 @@ const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form');
 const logoutbtn = document.querySelector('.nav__el--logout');
 if (mapBox) {
-  const locations = JSON.parse(dataset.location);
+  const locations = JSON.parse(mapBox.dataset.location);
+  console.log(locations);
   displayMap(locations);
 }
 if (loginForm) {

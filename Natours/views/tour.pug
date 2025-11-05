@@ -15,7 +15,6 @@ mixin overviewBox(label,text,icon)
     span.overview-box__text= text
 
 mixin reviewCard(review)
-    -console.log(review.user)
     .reviews__card
         .reviews__avatar
             img.reviews__avatar-img(src=`/img/users/${review.user.photo}`, alt=`${review.user.name}`)
@@ -86,6 +85,7 @@ block content
 
     section.section-map
      #map(data-location=`${JSON.stringify(tour.locations)}`)
+    
 
 
     section.section-reviews
