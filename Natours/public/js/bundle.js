@@ -6954,7 +6954,7 @@ var showAlert = exports.showAlert = function showAlert(type, msg) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.login = void 0;
+exports.logout = exports.login = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -6994,6 +6994,7 @@ function () {
 
         case 1:
           res = _context.v;
+          console.log(res);
 
           if (res.data.status === 'success') {
             (0, _alert.showAlert)('success', 'logged in succesfuly');
@@ -7018,6 +7019,52 @@ function () {
 
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
+  };
+}();
+
+var logout = exports.logout =
+/*#__PURE__*/
+function () {
+  var _ref2 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regenerator().m(function _callee2() {
+    var _result, _t2;
+
+    return _regenerator().w(function (_context2) {
+      while (1) switch (_context2.p = _context2.n) {
+        case 0:
+          _context2.p = 0;
+          console.log('reached axios');
+          _context2.n = 1;
+          return (0, _axios.default)({
+            method: 'GET',
+            url: 'http://localhost:3000/api/v1/users/logout'
+          });
+
+        case 1:
+          _result = _context2.v;
+
+          if (_result.data.status === 'success') {
+            (0, _alert.showAlert)('success', 'Logout Successfully');
+            location.reload(true);
+          }
+
+          _context2.n = 3;
+          break;
+
+        case 2:
+          _context2.p = 2;
+          _t2 = _context2.v;
+          (0, _alert.showAlert)('error', result.data.message);
+
+        case 3:
+          return _context2.a(2);
+      }
+    }, _callee2, null, [[0, 2]]);
+  }));
+
+  return function logout() {
+    return _ref2.apply(this, arguments);
   };
 }();
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"mapbox.js":[function(require,module,exports) {
@@ -7082,6 +7129,7 @@ var _mapbox = require("./mapbox");
 // import '@babel/polyfill';
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form');
+var logoutbtn = document.querySelector('.nav__el--logout');
 
 if (mapBox) {
   var locations = JSON.parse(dataset.location);
@@ -7096,6 +7144,10 @@ if (loginForm) {
     console.log(email, password);
     (0, _login.login)(email, password);
   });
+}
+
+if (logoutbtn) {
+  logoutbtn.addEventListener('click', _login.logout);
 }
 },{"./login":"login.js","./mapbox":"mapbox.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

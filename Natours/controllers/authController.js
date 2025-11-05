@@ -34,9 +34,9 @@ const createSendToken = (statuscode, user, res) => {
   });
 };
 
-const logout = async (req, res) => {
+exports.logout = async (req, res) => {
   res.cookie('jwt', 'LoggedoutUser', {
-    expires: new Date(Date.now() * 5 * 1000),
+    expires: new Date(Date.now() + 5 * 1000),
     httpOnly: true,
   });
   res.status(200).json({ status: 'success' });
@@ -182,18 +182,25 @@ exports.changePassword = catchAsync(async (req, res, next) => {
   await user.save();
   createSendToken(200, user, res);
 });
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
-    const decoded = await jwt.verify(req.cookies.jwt, process.env.JSON_SECRET);
-    const freshUser = await User.findById(decoded.id);
-    if (!freshUser) {
-      next();
+    try {
+      const decoded = await jwt.verify(
+        req.cookies.jwt,
+        process.env.JSON_SECRET,
+      );
+      const freshUser = await User.findById(decoded.id);
+      if (!freshUser) {
+        next();
+      }
+      if (freshUser.passwordChangeCheck(decoded.iat)) {
+        next();
+      }
+      res.locals.user = freshUser;
+      return next();
+    } catch (err) {
+      console.log(err);
     }
-    if (freshUser.passwordChangeCheck(decoded.iat)) {
-      next();
-    }
-    res.locals.user = freshUser;
-    return next();
   }
   next();
-});
+};
