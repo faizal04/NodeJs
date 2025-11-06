@@ -67,6 +67,7 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
+  console.log('protect');
   let token;
   if (
     req.headers.authorization &&
@@ -167,7 +168,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   //  logging the user in
 });
 exports.changePassword = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select('+password');
+  const user = await User.findById(req.user._id).select('+password');
 
   const correct = await user.comparePassword(
     req.body.currentPassword,

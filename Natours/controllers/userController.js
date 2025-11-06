@@ -14,8 +14,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       filterBody[key] = req.body[key];
     }
   });
-
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, filterBody, {
+  console.log(filterBody);
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
     new: true,
     runValidators: true,
   });
