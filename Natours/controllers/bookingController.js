@@ -4,9 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 
 // initialize razorpay instance with your key_id and key_secret (load from env vars)
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_TEST_API_KEY || `rzp_test_ReUiN3ieYAK69X`,
-  key_secret:
-    process.env.RAZORPAY_TEST_API_SECRET || `s70dVshUnHGAWTfnwAdizBvu`,
+  key_id: process.env.RAZORPAY_TEST_API_KEY,
+  key_secret: process.env.RAZORPAY_TEST_API_SECRET,
 });
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
