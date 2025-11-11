@@ -69,7 +69,6 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('protect');
   let token;
   if (
     req.headers.authorization &&
@@ -88,19 +87,21 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await jwt.verify(token, process.env.JSON_SECRET);
   const freshUser = await User.findById(decoded.id);
   if (!freshUser) {
-    next(
+    return next(
       new AppError('The user beloging to this token does no longer exist', 401),
     );
   }
   if (freshUser.passwordChangeCheck(decoded.iat)) {
-    next(
+    return next(
       new AppError('User recently changed the password! Please login again'),
     );
   }
   req.user = freshUser;
   res.locals.user = freshUser;
+  console.log('leavingProtected route');
   next();
 });
+
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
@@ -116,9 +117,9 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   }
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-  const resetURL = `${req.protocol}://$req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+  const url = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `forget you password? reset it here :${resetURL}\n If you didn't request this, ignore it.`;
+  const message = `forget you password? reset it here :${url}\n If you didn't request this, ignore it.`;
   console.log(user.email);
   try {
     // await sendEmail({
@@ -126,6 +127,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
     //   subject: 'Your Password reset Token (valid for 10 mins)',
     //   message,
     // });
+    new Email(user, url).forgotPassword();
     res.status(200).json({
       status: 'success',
       message: 'Token sent to email',
@@ -164,7 +166,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  token = this.signToken(user._id);
+  token = signToken(user._id);
   createSendToken(200, user, res);
 
   //  logging the user in

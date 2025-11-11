@@ -11,7 +11,8 @@ const sendErrorProd = (err, req, res) => {
     console.error('error');
     return res.status(500).json({
       status: 'error',
-      message: 'Something went wrong!',
+      // message: 'Something went wrong!',
+      message: err.message,
     });
   }
 
@@ -46,7 +47,7 @@ const handleCastErrorDB = (error) => {
   return new AppError(message, 400);
 };
 const handleDuplicateFieldsDB = (err) => {
-  const value = err.message.match(/dup key: { name: "(.*?)" }/)[1];
+  const value = err.message.match(/dup key: { name: "(.*?)" }/);
   return new AppError(
     `Duplicate field value ${value}. please use different name`,
     404,

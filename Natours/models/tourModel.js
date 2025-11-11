@@ -102,6 +102,14 @@ const TourSchema = mongoose.Schema(
         ref: 'User',
       },
     ],
+    paymentId: {
+      type: String,
+      required: true,
+    },
+    orderId: {
+      type: String,
+      required: true,
+    },
   },
 
   {
