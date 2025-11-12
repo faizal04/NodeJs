@@ -2,11 +2,14 @@
 import { logout, login } from './login';
 import { displayMap } from './mapbox';
 import { updateUser, updateUserSettings } from './updateSettings';
+import { bookTour } from './razorpay';
 
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.formlogin');
 const updateUserData = document.querySelector('.form-user-data');
 const updateUserPassword = document.querySelector('.form-user-password');
+const bookBtn = document.getElementById('book-tour');
+const proceedBtn = document.getElementById('proceed-payment');
 
 const logoutbtn = document.querySelector('.nav__el--logout');
 if (mapBox) {
@@ -53,5 +56,36 @@ if (updateUserPassword) {
     document.querySelector('#password-current').value = '';
     document.querySelector('#password').value = '';
     document.querySelector('#password-confirm').value = '';
+  });
+}
+// if (bookBtn) {
+//   bookBtn.addEventListener('click', (e) => {
+//     e.target.textContent = 'processing..';
+//     const { tourId } = e.target.dataset;
+//     console.log(tourId);
+//     bookTour(tourId);
+//   });
+// }
+// public/js/index.js
+// import '@babel/polyfill';
+// import { bookTour } from './payment';
+
+// Book tour button (on tour detail page)
+if (bookBtn) {
+  bookBtn.addEventListener('click', (e) => {
+    const { tourId } = e.target.dataset;
+    console.log(tourId);
+    // Redirect to checkout page
+    location.assign(`/checkout/${tourId}`);
+  });
+}
+
+// Proceed to payment button (on checkout page)
+if (proceedBtn) {
+  proceedBtn.addEventListener('click', (e) => {
+    e.target.textContent = 'Processing...';
+    e.target.disabled = true;
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });
 }

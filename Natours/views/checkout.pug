@@ -1,0 +1,41 @@
+//- views/checkout.pug
+extends index
+
+block append head
+  script(src='/js/payment.js' type='module')
+  
+block content
+  main.main
+    .checkout-container
+      .checkout-content
+        h1.heading-primary Checkout
+
+        .tour-summary
+          .tour-summary__header
+            img.tour-summary__image(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+          
+          .tour-summary__details
+            h2.heading-secondary= tour.name
+            p.tour-summary__description= tour.summary
+            
+            .tour-summary__info
+              .tour-summary__row
+                span.tour-summary__label Duration:
+                span.tour-summary__value= `${tour.duration} days`
+              
+              .tour-summary__row
+                span.tour-summary__label Max Group Size:
+                span.tour-summary__value= `${tour.maxGroupSize} people`
+              
+              .tour-summary__row
+                span.tour-summary__label Difficulty:
+                span.tour-summary__value= tour.difficulty
+            
+            .tour-summary__pricing
+              .tour-summary__row.tour-summary__row--total
+                span.tour-summary__label Total Price:
+                span.tour-summary__value.tour-summary__price= `₹${tour.price}`
+
+        .checkout-actions
+          button.btn.btn--green.btn--large#proceed-payment(data-tour-id=`${tour.id}`) Proceed to Payment
+          a.btn.btn--white(href=`/tour/${tour.slug}`) Cancel

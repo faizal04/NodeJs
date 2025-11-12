@@ -7183,7 +7183,76 @@ function () {
     return _ref.apply(this, arguments);
   };
 }();
-},{"axios":"../../node_modules/axios/index.js","../../utils/catchAsync":"../../utils/catchAsync.js","./alert":"alert.js"}],"index.js":[function(require,module,exports) {
+},{"axios":"../../node_modules/axios/index.js","../../utils/catchAsync":"../../utils/catchAsync.js","./alert":"alert.js"}],"razorpay.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bookTour = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _alert = require("./alert");
+
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine(u), _regeneratorDefine(u, o, "Generator"), _regeneratorDefine(u, n, function () { return this; }), _regeneratorDefine(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+
+function _regeneratorDefine(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine = function (_regeneratorDefine2) { function _regeneratorDefine(_x2, _x3, _x4, _x5) { return _regeneratorDefine2.apply(this, arguments); } _regeneratorDefine.toString = function () { return _regeneratorDefine2.toString(); }; return _regeneratorDefine; }(function (e, r, n, t) { function o(r, n) { _regeneratorDefine(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }), _regeneratorDefine(e, r, n, t); }
+
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+
+var bookTour = exports.bookTour =
+/*#__PURE__*/
+function () {
+  var _ref = _asyncToGenerator(
+  /*#__PURE__*/
+  _regenerator().m(function _callee(tourId) {
+    var session, _t;
+
+    return _regenerator().w(function (_context) {
+      while (1) switch (_context.p = _context.n) {
+        case 0:
+          _context.p = 0;
+          _context.n = 1;
+          return (0, _axios.default)("http://localhost:3000/api/v1/booking/checkout-session/".concat(tourId));
+
+        case 1:
+          session = _context.v;
+
+          if (!(session.data.status !== 'success')) {
+            _context.n = 2;
+            break;
+          }
+
+          throw new Error('Failed to create order');
+
+        case 2:
+          console.log(session);
+          window.location.href = session.data.paymentUrl;
+          _context.n = 4;
+          break;
+
+        case 3:
+          _context.p = 3;
+          _t = _context.v;
+          console.error('Booking error:', _t);
+          (0, _alert.showAlert)('error', _t.response?.data?.message || 'Error booking tour!');
+
+        case 4:
+          return _context.a(2);
+      }
+    }, _callee, null, [[0, 3]]);
+  }));
+
+  return function bookTour(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+},{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _login = require("./login");
@@ -7191,6 +7260,8 @@ var _login = require("./login");
 var _mapbox = require("./mapbox");
 
 var _updateSettings = require("./updateSettings");
+
+var _razorpay = require("./razorpay");
 
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine(u), _regeneratorDefine(u, o, "Generator"), _regeneratorDefine(u, n, function () { return this; }), _regeneratorDefine(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 
@@ -7204,6 +7275,8 @@ var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.formlogin');
 var updateUserData = document.querySelector('.form-user-data');
 var updateUserPassword = document.querySelector('.form-user-password');
+var bookBtn = document.getElementById('book-tour');
+var proceedBtn = document.getElementById('proceed-payment');
 var logoutbtn = document.querySelector('.nav__el--logout');
 
 if (mapBox) {
@@ -7275,8 +7348,39 @@ if (updateUserPassword) {
       return _ref.apply(this, arguments);
     };
   }());
+} // if (bookBtn) {
+//   bookBtn.addEventListener('click', (e) => {
+//     e.target.textContent = 'processing..';
+//     const { tourId } = e.target.dataset;
+//     console.log(tourId);
+//     bookTour(tourId);
+//   });
+// }
+// public/js/index.js
+// import '@babel/polyfill';
+// import { bookTour } from './payment';
+// Book tour button (on tour detail page)
+
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', function (e) {
+    var tourId = e.target.dataset.tourId;
+    console.log(tourId); // Redirect to checkout page
+
+    location.assign("/checkout/".concat(tourId));
+  });
+} // Proceed to payment button (on checkout page)
+
+
+if (proceedBtn) {
+  proceedBtn.addEventListener('click', function (e) {
+    e.target.textContent = 'Processing...';
+    e.target.disabled = true;
+    var tourId = e.target.dataset.tourId;
+    (0, _razorpay.bookTour)(tourId);
+  });
 }
-},{"./login":"login.js","./mapbox":"mapbox.js","./updateSettings":"updateSettings.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./login":"login.js","./mapbox":"mapbox.js","./updateSettings":"updateSettings.js","./razorpay":"razorpay.js"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -7304,7 +7408,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50651" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60304" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

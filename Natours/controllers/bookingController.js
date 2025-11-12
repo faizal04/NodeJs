@@ -1,6 +1,7 @@
 const Razorpay = require('razorpay');
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
+const Booking = require('../models/bookingModel');
 
 // initialize razorpay instance with your key_id and key_secret (load from env vars)
 const razorpay = new Razorpay({
@@ -8,32 +9,47 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_TEST_API_SECRET,
 });
 
+// controllers/bookingController.js
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
-  console.log('entering chekout route');
-
   const tour = await Tour.findById(req.params.tourID);
+
   if (!tour) {
-    return next(/* some error: tour not found */);
+    return next(new AppError('Tour not found', 404));
   }
 
-  const amountInPaise = tour.price * 100; // Razorpay expects amount in paise if INR
-
-  const options = {
-    amount: amountInPaise,
+  // Create Razorpay Payment Link (hosted checkout page)
+  const paymentLink = await razorpay.paymentLink.create({
+    amount: tour.price * 100, // Amount in paise
     currency: 'INR',
-    receipt: `tour_${Date.now()}`, // you can define your own receipt string
-    // optionally notes: you can pass metadata
-    notes: {
-      tourName: tour.name,
-      userEmail: req.user.email,
-      tourId: tour.id,
+    description: `Booking for ${tour.name}`,
+    customer: {
+      name: req.user.name,
+      email: req.user.email,
     },
-  };
-
-  const order = await razorpay.orders.create(options);
+    notify: {
+      sms: false,
+      email: true,
+    },
+    reminder_enable: true,
+    notes: {
+      tourId: tour.id,
+      userId: req.user.id,
+      tourName: tour.name,
+    },
+    callback_url: `${req.protocol}://${req.get('host')}/?tour=${req.params.tourID}&user=${req.user._id}&price=${tour.price}`,
+    callback_method: 'get',
+  });
 
   res.status(200).json({
     status: 'success',
-    order, // send the order object to frontend
+    paymentUrl: paymentLink.short_url, // Send URL to frontend
   });
+});
+
+exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+  const { tour, user, price } = req.query;
+  console.log(tour, user, price);
+  if (!tour && !user && !price) return next();
+  await Booking.create({ tour, user, price });
+  res.redirect(req.originalUrl.split('?')[0]);
 });

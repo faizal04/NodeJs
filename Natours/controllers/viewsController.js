@@ -56,3 +56,20 @@ exports.getMyAccount = (req, res) => {
 //     user: updatedUser,
 //   });
 // });
+
+// controllers/viewsController.js
+exports.getCheckoutPage = catchAsync(async (req, res, next) => {
+  console.log('trying to render checkoutPage');
+  // 1. Get tour data
+  const tour = await Tour.findById(req.params.tourId);
+
+  if (!tour) {
+    return next(new AppError('Tour not found', 404));
+  }
+
+  // 2. Render checkout page
+  res.status(200).render('checkout', {
+    title: 'Checkout',
+    tour,
+  });
+});

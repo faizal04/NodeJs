@@ -1,7 +1,7 @@
 const { convert } = require('html-to-text');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
-
+console.log('email', process.env.EMAIL_FROM);
 module.exports = class Email {
   constructor(user, url) {
     this.firstName = user.name.split(' ')[0];

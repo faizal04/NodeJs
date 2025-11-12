@@ -122,11 +122,6 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   const message = `forget you password? reset it here :${url}\n If you didn't request this, ignore it.`;
   console.log(user.email);
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: 'Your Password reset Token (valid for 10 mins)',
-    //   message,
-    // });
     new Email(user, url).forgotPassword();
     res.status(200).json({
       status: 'success',
