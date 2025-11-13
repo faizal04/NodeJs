@@ -61,6 +61,12 @@ userSchema.virtual('reviews', {
   foreignField: 'user',
   localField: '_id',
 });
+userSchema.virtual('bookings', {
+  ref: 'Booking', // The model to populate from
+  foreignField: 'user', // The field in Booking that refers to the user
+  localField: '_id', // The user’s own _id
+});
+
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();

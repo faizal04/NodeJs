@@ -2,6 +2,8 @@ const Razorpay = require('razorpay');
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const Booking = require('../models/bookingModel');
+const User = require('../models/userModel');
+const factoryHandler = require('./factoryHandler');
 
 // initialize razorpay instance with your key_id and key_secret (load from env vars)
 const razorpay = new Razorpay({
@@ -53,3 +55,9 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   await Booking.create({ tour, user, price });
   res.redirect(req.originalUrl.split('?')[0]);
 });
+
+exports.getAllBooking = factoryHandler.getAll(Booking);
+exports.createBooking = factoryHandler.createOne(Booking);
+exports.updateBooking = factoryHandler.updateOne(Booking);
+exports.getBooking = factoryHandler.getOne(Booking);
+exports.deleteBooking = factoryHandler.deleteOne(Booking);
