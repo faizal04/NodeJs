@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const multer = require('multer');
 const factoryHandler = require('./factoryHandler');
 const sharp = require('sharp');
+//reference
 
 // const multerStorage = multer.diskStorage({
 //   destination: (req, file, callback) => {

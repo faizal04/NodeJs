@@ -42,16 +42,20 @@ exports.logout = async (req, res) => {
   res.status(200).json({ status: 'success' });
 };
 exports.signUp = catchAsync(async (req, res, next) => {
+  const otp = crypto.randomInt(100000, 999999);
+
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
     passwordChangeAt: req.body.passwordChangeAt,
-    // role: req.body.role,
+    otp: otp,
+    otpExpires: Date.now() + 10 * 60 * 1000,
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(user, url).sendWelcome();
+  await new Email(user).otpVerification(otp);
   createSendToken(201, user, res);
 });
 

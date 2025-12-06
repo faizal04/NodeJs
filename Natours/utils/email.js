@@ -10,7 +10,7 @@ module.exports = class Email {
     this.from = `Faisalharray <${process.env.EMAIL_FROM}>`;
   }
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'development') {
       try {
         return nodemailer.createTransport({
           service: 'SendGrid',
@@ -54,5 +54,11 @@ module.exports = class Email {
   }
   async forgotPassword() {
     await this.send('resetPassword', 'Reset Password of Hook&Hike website');
+  }
+  async otpVerification(otp) {
+    await this.send(
+      'otpVerification',
+      `your otp is ${otp} please enter it on website before it expires.this otp will expire in next 10 mins`,
+    );
   }
 };

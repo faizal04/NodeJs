@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const AppError = require('../utils/appError');
+// const AppError = require('../utils/appError');
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -41,6 +41,9 @@ const userSchema = mongoose.Schema(
         message: 'Password doesnt match',
       },
     },
+    otp: { type: String, select: false },
+    otpExpires: { type: Date, select: false },
+
     passwordChangeAt: Date,
     passwordResetToken: { type: String },
     passwordResetExpires: Date,
@@ -62,25 +65,29 @@ userSchema.virtual('reviews', {
   localField: '_id',
 });
 userSchema.virtual('bookings', {
-  ref: 'Booking', // The model to populate from
-  foreignField: 'user', // The field in Booking that refers to the user
-  localField: '_id', // The user’s own _id
+  ref: 'Booking',
+  foreignField: 'user',
+  localField: '_id',
 });
 
 userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
+
 userSchema.pre('save', function (next) {
   if (this.isModified('password' || this.isNew)) {
     return next();
   }
+
   this.passwordChangeAt = Date.now() - 1000;
   next();
 });
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
+  console.log('running pre save');
+
   this.password = await bcrypt.hash(this.password, 12);
   this.confirmPassword = undefined;
   next();
