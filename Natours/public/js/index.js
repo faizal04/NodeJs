@@ -6,6 +6,8 @@ import { bookTour } from './razorpay';
 
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.formlogin');
+const signupForm = document.querySelector('.formSignup');
+
 const updateUserData = document.querySelector('.form-user-data');
 const updateUserPassword = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
@@ -89,3 +91,14 @@ if (proceedBtn) {
     bookTour(tourId);
   });
 }
+
+// if (signupForm) {
+//   signupForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     const email = document.getElementById('signupemail').value;
+//     const name = document.getElementById('name').value;
+//     const password = document.getElementById('signupPassword').value;
+//     const confirmPassword = document.getElementById('confirmPassword').value;
+//     console.log(email, password, confirmPassword, name);
+//   });
+// }

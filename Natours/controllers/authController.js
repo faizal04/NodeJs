@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-
+const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const User = require('./../models/userModel');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
+const OTPVerification = require('../models/otpVerificationModal');
+const { error } = require('console');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JSON_SECRET, {
@@ -41,21 +43,57 @@ exports.logout = async (req, res) => {
   });
   res.status(200).json({ status: 'success' });
 };
-exports.signUp = catchAsync(async (req, res, next) => {
+exports.otpVerification = catchAsync(async (req, res, next) => {
+  const existingUser = await User.findOne({ email: req.body.email });
+  if (existingUser) return next(new AppError('User Already exists'));
+  const verificationToken = crypto.randomBytes(32).toString('hex');
   const otp = crypto.randomInt(100000, 999999);
-
-  const user = await User.create({
+  const user = {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
-    passwordChangeAt: req.body.passwordChangeAt,
-    otp: otp,
-    otpExpires: Date.now() + 10 * 60 * 1000,
+    // passwordChangeAt: req.body.passwordChangeAt,
+  };
+  const otpDoc = await OTPVerification.create({
+    email: req.body.email,
+    verificationToken,
+    otp: await bcrypt.hash(otp.toString(), 12),
+    userData: user,
   });
+  await new Email({ email: user.email, name: user.name }).otpVerification(otp);
+  res.cookie('verificationToken', verificationToken, {
+    expires: new Date(Date.now() + 10 * 60 * 1000),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  });
+  res.status(200).json({
+    status: 'success',
+    message: 'verification code send successfully.Verify it under 10 minutes',
+    verificationToken,
+    user,
+  });
+});
+
+exports.verify = catchAsync(async (req, res, next) => {
+  const { otp } = req.body;
+  console.log(otp);
+  const verificationToken = req.cookies.verificationToken;
+  if (!verificationToken) {
+    return next(new AppError('Verification session expired', 400));
+  }
+  const otpRecord = await OTPVerification.findOne({ verificationToken });
+  // console.log(otpRecord);
+  if (!otpRecord) return next(new AppError('OTP expired or invalid', 400));
+  const isValid = await bcrypt.compare(otp.toString(), otpRecord.otp);
+  if (!isValid) return next(new AppError('Invaid otp', 400));
+  const userData = otpRecord.userData;
+  console.log(userData);
+  const user = await User.create(userData);
   const url = `${req.protocol}://${req.get('host')}/me`;
   await new Email(user, url).sendWelcome();
-  await new Email(user).otpVerification(otp);
+  // await new Email(user).otpVerification(otp);
   createSendToken(201, user, res);
 });
 

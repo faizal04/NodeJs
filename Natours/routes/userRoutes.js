@@ -3,7 +3,9 @@ const userController = require('../controllers/userController.js');
 const authController = require('./../controllers/authController.js');
 
 const router = express.Router();
-router.post('/signup', authController.signUp);
+router.post('/otpverification', authController.otpVerification);
+router.post('/verify', authController.verify);
+
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 router.post('/forgetpassword', authController.forgetPassword);

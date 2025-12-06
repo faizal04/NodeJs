@@ -1,0 +1,23 @@
+extend index 
+
+block content
+  main.main
+    .Signup-form
+      h2.heading-secondary.ma-bt-lg Sign up
+      form.form.formSignup
+        .form__group
+          label.form__label(for='name') Name
+          input#name.form__input(type='text', placeholder='abc', required)
+          label.form__label(for='email') Email address
+          input#signupemail.form__input(type='email', placeholder='you@example.com', required) 
+      
+        .form__group.ma-bt-md
+          label.form__label(for='password') Password
+          input#signupPassword.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          label.form__label(for='confirmPassword') Confirmn Password
+          input#confirmPassword.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          label.form__label.otpverification(for='otp') Otp
+           input#otpVerification.form__input(type='text', placeholder='••••••••', required, minlength='6')
+        .form__group
+          
+          button.signupbtn.btn--green Send Otp

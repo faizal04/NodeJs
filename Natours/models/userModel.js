@@ -41,8 +41,6 @@ const userSchema = mongoose.Schema(
         message: 'Password doesnt match',
       },
     },
-    otp: { type: String, select: false },
-    otpExpires: { type: Date, select: false },
 
     passwordChangeAt: Date,
     passwordResetToken: { type: String },
